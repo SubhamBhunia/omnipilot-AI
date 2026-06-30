@@ -35,7 +35,7 @@ Think of it as a digital watchdog, ensuring every recommendation is safe before 
 
 📂 Project Blueprint
 image
-<img width="1367" height="946" alt="Image" src="https://github.com/user-attachments/assets/103a184e-3384-421c-9dd4-fa6c9e72cda2" />
+<img width="1900" height="916" alt="Image" src="https://github.com/user-attachments/assets/99861c12-84ac-463d-8d17-5a4a735fe206" />
 
 Code
 Capstone/
