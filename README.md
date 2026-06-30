@@ -34,6 +34,9 @@ Execution Policies (chemical-policy.json): A living rulebook that blocks banned 
 Think of it as a digital watchdog, ensuring every recommendation is safe before it reaches the farmer.
 
 📂 Project Blueprint
+image
+<img width="1367" height="946" alt="Image" src="https://github.com/user-attachments/assets/103a184e-3384-421c-9dd4-fa6c9e72cda2" />
+
 Code
 Capstone/
 ├── mcp-server/        <- Secure MCP backend
