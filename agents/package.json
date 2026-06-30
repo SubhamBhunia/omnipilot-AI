@@ -1,0 +1,16 @@
+{
+  "name": "agrisustain-agents",
+  "version": "1.0.0",
+  "description": "ADK Multi-Agent coordination engine for AgriSustain AI",
+  "main": "dist/simulate.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "simulate": "node dist/simulate.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

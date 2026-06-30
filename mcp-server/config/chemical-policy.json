@@ -1,0 +1,27 @@
+{
+  "bannedSubstances": [
+    "paraquat",
+    "ddt",
+    "glyphosate",
+    "aldrin",
+    "chlordane"
+  ],
+  "maxDosageGPerSqm": {
+    "copper_sulfate": 2.5,
+    "neem_oil": 15.0,
+    "pyrethrin": 0.5,
+    "spinosad": 1.2,
+    "sulfur": 5.0
+  },
+  "waterBodyBufferZoneMeters": {
+    "copper_sulfate": 30,
+    "pyrethrin": 15,
+    "spinosad": 10,
+    "sulfur": 5,
+    "neem_oil": 0
+  },
+  "cropRestrictions": {
+    "copper_sulfate": ["spinach", "lettuce"],
+    "sulfur": ["cucumber", "melon"]
+  }
+}
