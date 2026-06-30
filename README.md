@@ -1,149 +1,89 @@
-# AgriSustain AI: Smart Agriculture Multi-Agent System & Safe Execution Control Room
+🌱 AgriSustain AI: Guardians of Smart Farming
+AgriSustain AI isn’t just another open-source project — it’s a digital control room for sustainable agriculture, built for the Agents for Good track. Imagine a team of AI specialists working side by side with farmers, ensuring healthier soils, resilient crops, and safe ecosystems. Every recommendation passes through a strict compliance gate, so no harmful chemical slips through, and every action respects the land and water around it.
 
-AgriSustain AI is an open-source, public utility system built for the **Agents for Good** track. It is designed to assist sustainable and smallholder farmers in optimizing soil chemistry and diagnosing crop diseases, while acting as a rigid, automated compliance gate to prevent chemical fertilizer overuse and ecological runoff near waterways.
+🧩 The Three Pillars of AgriSustain
+1. Multi-Agent Intelligence (Google Vertex AI ADK)
+Instead of one giant brain, AgriSustain deploys a team of modular agents:
 
-This system demonstrates collaboration between modular AI specialists and a strict validation layer, ensuring that AI recommendations are safe, localized, and compliant with environmental standards.
+AgriOrchestratorAgent: The conductor, routing farmer queries to the right specialists.
 
----
+CropSoilAgent: The soil whisperer, analyzing pH, nutrients, and moisture to suggest eco-friendly improvements.
 
-## Key Architecture & Concepts
+PestDiseaseAgent: The plant doctor, diagnosing diseases and pests from symptoms.
 
-AgriSustain AI applies three core design concepts:
+SafetyEnforcerAgent: The compliance officer, intercepting risky chemical proposals and swapping them for organic alternatives.
 
-### 1. Google Vertex AI ADK Multi-Agent System
-Rather than relying on a single large prompt, the system splits reasoning into a hierarchical **Agent Development Kit (ADK)** multi-agent team:
-*   **AgriOrchestratorAgent (Parent)**: The entry agent that accepts queries from the farmer, queries sensor databases via MCP tools, and routes work to specialists.
-*   **CropSoilAgent (Specialist)**: Focuses on soil pH levels, NPK nutrients, moisture indices, and recommends soil improvements or watering adjustments.
-*   **PestDiseaseAgent (Specialist)**: Focuses on plant pathology, analyzing physical symptoms to diagnose pests and crop diseases.
-*   **SafetyEnforcerAgent (Guardrail Auditor)**: The compliance officer. It intercepts all chemical proposals, submits them to the MCP validation tools, and if blocked, overrides them with organic fallbacks.
+Together, they form a hierarchical orchestra of intelligence, each playing its part in harmony.
 
-### 2. Custom Model Context Protocol (MCP) Server
-AgriSustain decouples its data access from the language models by implementing the **Model Context Protocol (MCP)**:
-*   It exposes standardised tool endpoints (`get_soil_telemetry`, `propose_treatment`, `get_safety_logs`) over standard input/output (Stdio).
-*   Any MCP-compliant LLM or IDE can query live zone telemetry and submit chemical applications for validation without direct database drivers.
+2. MCP Server: The Secure Gateway
+AgriSustain runs on a Model Context Protocol (MCP) server, which acts like a translator between AI and real-world farm data.
 
-### 3. Verification & Safe Execution Security
-To prevent prompt injection overrides or hazardous actions, the system enforces two layers of security:
-*   **Input Sanitization**: Validates parameters (e.g. zone names, dosage bounds, string character sets) prior to parsing.
-*   **Execution Policies (`chemical-policy.json`)**: An environmental safety policy engine. It blocks banned substances (e.g., Paraquat, DDT) and evaluates pesticide applications against water-body buffer buffers (e.g., blocking copper sulfate within 30 meters of a river stream to prevent fish toxicity).
+Tools like get_soil_telemetry and propose_treatment expose clean endpoints.
 
----
+Any MCP-compliant client can plug in, query live telemetry, and validate treatments — without messy database drivers.
 
-## Project Structure
+It’s modular, portable, and future-proof.
 
-```
+3. Safety First: Guardrails & Policies
+No AI should run wild in agriculture. AgriSustain enforces two layers of protection:
+
+Input Sanitization: Every parameter is checked — zone names, dosage limits, character sets.
+
+Execution Policies (chemical-policy.json): A living rulebook that blocks banned substances (Paraquat, DDT) and enforces buffer zones near rivers to protect aquatic life.
+
+Think of it as a digital watchdog, ensuring every recommendation is safe before it reaches the farmer.
+
+📂 Project Blueprint
+Code
 Capstone/
-├── README.md                          <- This document
-├── mcp-server/                        <- Custom Model Context Protocol Server
-│   ├── package.json                   <- Server dependencies & scripts
-│   ├── tsconfig.json                  <- TypeScript configuration
-│   ├── src/
-│   │   ├── index.ts                   <- MCP bootloader using Stdio transport
-│   │   ├── tools.ts                   <- Tool schemas and execute router
-│   │   ├── security.ts                <- Input sanitation & chemical policy evaluator
-│   │   └── data.ts                    <- Telemetry & crop mock database
-│   └── config/
-│       └── chemical-policy.json       <- Editable safety thresholds & buffer bounds
-├── agents/                            <- Google ADK Multi-Agent Package
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── src/
-│       ├── orchestrator.ts            <- Multi-agent supervisor coordinator
-│       ├── crop_soil.ts               <- Nutrient & pH specialist agent
-│       ├── pest_disease.ts            <- Pathology & pest specialist agent
-│       ├── safety_enforcer.ts         <- Guardrail interceptor & compliance audit agent
-│       └── simulate.ts                <- Command-line end-to-end workflow runner
-└── frontend/                          <- Premium Glassmorphic Dashboard
-    ├── package.json
-    ├── index.html
-    └── src/
-        ├── main.tsx
-        ├── App.tsx                    <- Live agent simulation state machine & interactive panels
-        ├── App.css                    <- Dark-mode CSS styling tokens and micro-animations
-        └── assets/
-            └── logo.png               <- Generated project branding asset
-```
+├── mcp-server/        <- Secure MCP backend
+├── agents/            <- Multi-agent intelligence
+└── frontend/          <- Glassmorphic dashboard
+Each folder is a piece of the puzzle: backend validation, agent collaboration, and a futuristic UI.
 
----
+🚀 Running the System
+Spin up the MCP Server
 
-## Setup & Running the Code
+bash
+cd mcp-server && npm install && npm run build && npm start
+Run the Multi-Agent Simulator
 
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) (v18+) installed.
+bash
+cd agents && npm install && npm run build && npm run simulate
+Safe Case ✅
 
-### 1. Build and Run the MCP Server
-```bash
-cd mcp-server
-npm install
-npm run build
-npm start
-```
-The MCP server will launch and listen on standard input/output (stdin/stdout), ready to connect to any MCP client.
+Buffer Violation 🚫 → Organic fallback
 
-### 2. Compile and Run the Multi-Agent Simulator
-```bash
-cd agents
-npm install
-npm run build
-npm run simulate
-```
-This runs three test scenarios on the command line:
-1.  **Safe Case**: Proposes a mild copper fungicide treatment in Zone-A, which is 55m from the water body (buffer limit is 30m). **Cleared.**
-2.  **Buffer Violation Case**: Proposes a chemical treatment in Zone-B, which is only 8m from a local water stream. **SafetyEnforcer blocks the tool and triggers an organic baking soda replacement.**
-3.  **Banned Chemical Injection Case**: Proposes Paraquat herbicide. **Globally blocked and replaced with mechanical weeding.**
+Banned Chemical 🚫 → Mechanical weeding
 
-### 3. Launch the Interactive Glassmorphic Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Open the local URL (e.g., `http://localhost:5173`) in your browser to interact with the premium control panel dashboard.
+Launch the Glassmorphic Dashboard
 
----
+bash
+cd frontend && npm install && npm run dev
+Open http://localhost:5173 and step into your eco-tech control room.
 
-## UI Layout Design & Aesthetics
+🎨 UI: A Futuristic Control Room
+Dark obsidian gradients with glowing emerald accents.
 
-The UI dashboard is styled as a state-of-the-art smart agriculture control room:
-*   **Deep Obsidian Gradient**: Deep dark backgrounds (`#0b0f14` to `#152222`) paired with glowing neon-emerald accents (`#10b981`).
-*   **Glassmorphism Panels**: Semi-transparent card panels with `backdrop-filter: blur(12px)` and thin borders, creating depth.
-*   **Agent Pipeline Pipeline**: Visual nodes that flash and highlight dynamically as the request passes from the *Orchestrator* to the *Specialists* and finally to the *Safety Enforcer*.
-*   **MCP Security Terminal**: A simulated log terminal detailing each request's input sanitization parameters, rule checks, and safety execution codes in real-time.
+Glassmorphism panels that shimmer with depth.
 
----
+Agent pipeline animations showing the journey from Orchestrator → Specialists → Safety Enforcer.
 
-## ANTIGRAVITY Demo Explanation (End-to-End Workflow)
+Live security terminal streaming validation logs in real time.
 
-This project template was built end-to-end by **Antigravity**, a pairs-programming AI coding assistant. The development workflow proceeded as follows:
+It feels less like software, more like a mission control for Earth’s future farms.
 
-```mermaid
+🌀 ANTIGRAVITY Demo Workflow
+From research to polished dashboard, the ANTIGRAVITY workflow unfolds like a story:
+
+mermaid
 graph TD
-    A[Research Workspace] --> B[Draft Implementation Plan]
-    B --> C[Create custom MCP Server config & policy engine]
-    C --> D[Develop ADK Agent Code & CLI Simulator]
-    D --> E[Scaffold React-TypeScript Frontend via cmd.exe]
-    E --> F[Generate Branding Assets using generate_image tool]
-    F --> G[Code Glassmorphic UI Dashboard & Simulation Matrix]
-    G --> H[Run Verification Builds & Terminal Tests]
-    H --> I[Complete Project Documentation]
-```
-
-1.  **Requirement Alignment**: Verified workspace parameters and established a custom policy configuration (`chemical-policy.json`) mapping out chemical boundaries.
-2.  **Safety Engine Development**: Programmed input sanitizers in `security.ts` to block standard string hacks and check database zone parameters.
-3.  **ADK Team Coding**: Designed separate agents with distinct system instructions (Crop & Soil agronomist, Pathology botanist, and Environmental safety auditor) and coordinated them via an Orchestrator.
-4.  **UI Scaffolding**: Built a Vite React environment, avoiding standard Tailwind dependencies to deliver tailored, high-performance vanilla CSS glassmorphic controls.
-5.  **Asset Generation**: Generated and placed `logo.png` to give the dashboard a polished eco-tech appearance.
-6.  **Validation Check**: Executed build compilations across the entire workspace, ensuring zero errors, and ran the CLI simulator to verify safety fallbacks.
-#   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- #   o m n i p i l o t - A I  
- 
+    A[Research] --> B[Plan]
+    B --> C[Build MCP Server]
+    C --> D[Code Agents]
+    D --> E[Scaffold Frontend]
+    E --> F[Generate Branding]
+    F --> G[Design Dashboard]
+    G --> H[Test & Verify]
+    H --> I[Document Everything]
+Each step ensures the system isn’t just functional — it’s trustworthy, elegant, and farmer-ready.
